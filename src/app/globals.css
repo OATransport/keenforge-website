@@ -177,18 +177,27 @@ body {
   border-radius: 6px;
 }
 
-html {
-  scroll-behavior: smooth;
-  /* Account for the sticky header at its expanded height plus breathing room.
-     Expanded header lands around 88px tall; compact mode lands around 64px.
-     We pad the larger of the two so anchor jumps never bury the heading. */
-  scroll-padding-top: 112px;
+/*
+  Sticky header offset.
+
+  The header is sticky and changes height between an expanded state (~96px
+  including the larger lockup) and a compact scrolled state (~70px). We pad
+  scroll positions to the larger of the two plus a little breathing room so
+  anchor jumps never bury the heading.
+*/
+:root {
+  --header-offset: 112px;
 }
 
-/* Any anchor target on the site (sections, h2s, IDs we link to from menus
-   or cross-page links) should clear the sticky header cleanly. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-offset);
+}
+
+/* Any anchor target on the site (sections, headings with ids, or any element
+   marked as a scroll anchor) should clear the sticky header cleanly. */
 section[id],
-[id]:where(h1, h2, h3),
+[id]:where(h1, h2, h3, h4),
 [data-anchor] {
-  scroll-margin-top: 112px;
+  scroll-margin-top: var(--header-offset);
 }

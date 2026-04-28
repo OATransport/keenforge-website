@@ -54,7 +54,7 @@ export const PRIMARY_CTA = {
 export const HERO = {
   headline: "Turn More Leads Into Booked Appointments.",
   subhead:
-    "For service based and appointment driven businesses where every missed call, form, or message can cost real revenue. KeenForge installs the operating layer between your marketing and your booked work.",
+    "For service based and appointment driven businesses, KeenForge connects your website, calls, CRM, booking, and follow up so more of the leads you already earn turn into real appointments.",
   primaryCta: PRIMARY_CTA,
   secondaryCta: { label: "See What We Build", href: "/services" },
   trustChips: [
@@ -334,7 +334,7 @@ export const INDUSTRIES = [
     problem:
       "The pieces are there. The system is not. Marketing, response, and sales each live on their own island.",
     solution:
-      "We connect the islands. One operating layer for capture, response, follow up, and reporting that matches how you actually sell.",
+      "We connect the islands. One connected system for capture, response, follow up, and reporting that matches how you actually sell.",
     bestFit: ["CRM Setup", "Pipeline Setup", "Lead Source Tracking", "Follow Up Workflows"],
   },
 ] as const;
@@ -359,12 +359,12 @@ export const WHY = [
 ] as const;
 
 export const PROOF = {
-  title: "What This Is, And What It Is Not.",
+  title: "What KeenForge Is and What It Is Not",
   body: "We are not going to fake proof. Until public case studies are ready, we would rather show you exactly how the system works, what it fixes, and where it creates leverage in the business.",
   is: {
     label: "What This Is",
     items: [
-      "A practical operating layer for capturing and converting opportunities.",
+      "A practical system for capturing and converting more of the opportunities you already earn.",
       "Built around real business use, with clear scope, setup, and next steps.",
       "Something your team can actually run on a Tuesday morning.",
     ],
@@ -418,7 +418,7 @@ export const FAQ = [
   },
   {
     q: "Do you replace our marketing team or support them?",
-    a: "Whichever fits. Some clients have us run the system. Others have an in house team that we plug into and make the operating layer underneath them stronger.",
+    a: "Whichever fits. Some clients have us run the system. Others have an in house team that we plug into and strengthen the system running underneath them.",
   },
   {
     q: "What does it cost?",

@@ -14,9 +14,9 @@ export function Footer() {
           <div className="md:col-span-5">
             <LogoLockup size="lg" tone="white" />
             <p className="mt-7 max-w-md text-[15.5px] leading-relaxed text-night-ink-2">
-              KeenForge installs the operating layer between your marketing
-              and your booked work. Websites, response, CRM, and follow up,
-              running as one connected system.
+              KeenForge connects your website, calls, CRM, booking, and
+              follow up so more of the leads you already earn turn into real
+              appointments.
             </p>
             <div className="mt-9">
               <Button href={PRIMARY_CTA.href} variant="primary" size="md">

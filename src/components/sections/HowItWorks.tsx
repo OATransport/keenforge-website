@@ -9,10 +9,10 @@ export function HowItWorks() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-5">
             <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-signal-teal">
-              How a Build Comes Together
+              The Build
             </p>
             <h2 className="display mt-4 text-[36px] sm:text-[46px] lg:text-[54px] text-forge-navy">
-              Four Steps. Then You Are Running on It.
+              How the Build Works
             </h2>
             <p className="mt-7 max-w-md text-[16.5px] leading-relaxed text-deep-charcoal/80">
               The build moves fast without breaking the business. We start

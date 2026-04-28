@@ -9,7 +9,7 @@ import { SERVICE_GROUPS } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Capture, Respond, Organize, Follow Up, and Improve. The connected operating layer KeenForge installs for local and service based businesses.",
+    "Capture, Respond, Organize, Follow Up, and Improve. The connected system KeenForge installs for service based and appointment driven businesses.",
 };
 
 export default function ServicesPage() {
@@ -18,7 +18,7 @@ export default function ServicesPage() {
       <PageHero
         eyebrow="Services"
         title="The Connected System Behind Every Booked Appointment."
-        body="We do not sell tools. We install the layer between your marketing and your revenue. Five layers, one journey, and a clear path from inquiry to booked work."
+        body="We do not sell tools. We connect the pieces between first contact and booked work. Five layers, one journey, and a clear path from inquiry to revenue."
       />
 
       <Section tone="paper" bordered size="md">
