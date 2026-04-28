@@ -1,26 +1,194 @@
 @import "tailwindcss";
 
+/*
+  KeenForge brand tokens
+  --------------------------------------------------------------
+  Primary brand palette:
+    Forge Navy    #0B1F33   - dark brand surface, headers on dark, premium sections
+    Deep Charcoal #121417   - body text, dark UI, strong contrast
+    Signal Teal   #2E8F8A   - main accent, CTAs, dividers, focus rings
+    Warm Ivory    #F6F2EA   - main background, light surfaces
+    Steel Gray    #6B7280   - supporting text, borders, muted labels
+    Copper Accent #B8753B   - rare premium accent (icons, micro details only)
+
+  The legacy semantic tokens (bone/paper/ink/ember/night...) remain so
+  components do not have to be refactored. They now resolve to the brand
+  palette.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand tokens (canonical names) */
+  --forge-navy: #0B1F33;
+  --forge-navy-2: #122a44;
+  --forge-navy-3: #1b395a;
+  --forge-navy-rule: #25446a;
+
+  --deep-charcoal: #121417;
+  --deep-charcoal-2: #2a2c30;
+
+  --signal-teal: #2E8F8A;
+  --signal-teal-deep: #236E6A;
+  --signal-teal-tint: #d6e9e7;
+
+  --warm-ivory: #F6F2EA;
+  --warm-ivory-2: #FBF8F1;
+  --warm-ivory-3: #ECE5D2;
+
+  --steel-gray: #6B7280;
+  --steel-gray-soft: #98A0AC;
+  --steel-rule: #DCD6C5;
+
+  --copper: #B8753B;
+
+  /* Legacy semantic aliases (mapped to brand palette) */
+  --bone: var(--warm-ivory);
+  --paper: var(--warm-ivory-2);
+  --ash: var(--warm-ivory-3);
+  --rule: var(--steel-rule);
+  --ink: var(--deep-charcoal);
+  --ink-2: #3F4651;          /* charcoal lifted toward steel for body */
+  --ink-3: var(--steel-gray);
+
+  --ember: var(--signal-teal);
+  --ember-deep: var(--signal-teal-deep);
+  --ember-tint: var(--signal-teal-tint);
+
+  --night: var(--forge-navy);
+  --night-2: var(--forge-navy-2);
+  --night-3: var(--forge-navy-3);
+  --night-rule: var(--forge-navy-rule);
+  --night-ink-2: #C9D5E2;
+  --night-ink-3: #8A9BB0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand */
+  --color-forge-navy: var(--forge-navy);
+  --color-forge-navy-2: var(--forge-navy-2);
+  --color-forge-navy-3: var(--forge-navy-3);
+  --color-deep-charcoal: var(--deep-charcoal);
+  --color-signal-teal: var(--signal-teal);
+  --color-signal-teal-deep: var(--signal-teal-deep);
+  --color-signal-teal-tint: var(--signal-teal-tint);
+  --color-warm-ivory: var(--warm-ivory);
+  --color-warm-ivory-2: var(--warm-ivory-2);
+  --color-warm-ivory-3: var(--warm-ivory-3);
+  --color-steel-gray: var(--steel-gray);
+  --color-steel-rule: var(--steel-rule);
+  --color-copper: var(--copper);
+
+  /* Legacy aliases */
+  --color-bone: var(--bone);
+  --color-paper: var(--paper);
+  --color-ash: var(--ash);
+  --color-rule: var(--rule);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ember: var(--ember);
+  --color-ember-deep: var(--ember-deep);
+  --color-ember-tint: var(--ember-tint);
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-night-3: var(--night-3);
+  --color-night-rule: var(--night-rule);
+  --color-night-ink-2: var(--night-ink-2);
+  --color-night-ink-3: var(--night-ink-3);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-fraunces), "Times New Roman", Georgia, ui-serif, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--warm-ivory);
+  color: var(--deep-charcoal);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--signal-teal);
+  color: var(--warm-ivory);
+}
+
+/* Display headlines use Fraunces. SOFT softens the serifs. opsz tunes for
+   large display sizing so the same family reads well at 72px and 24px. */
+.display {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+}
+
+.display-tight {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  font-variation-settings: "SOFT" 60, "opsz" 144;
+}
+
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 80, "opsz" 144;
+}
+
+.prose-keen p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+/* Subtle paper grain to keep light surfaces from feeling flat */
+.bg-paper-grain {
+  background-color: var(--warm-ivory);
+  background-image:
+    radial-gradient(rgba(11, 31, 51, 0.025) 1px, transparent 1px),
+    radial-gradient(rgba(11, 31, 51, 0.018) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+}
+
+.bg-night-grain {
+  background-color: var(--forge-navy);
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+}
+
+/* Focus ring uses Signal Teal */
+:focus-visible {
+  outline: 2px solid var(--signal-teal);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Account for the sticky header at its expanded height plus breathing room.
+     Expanded header lands around 88px tall; compact mode lands around 64px.
+     We pad the larger of the two so anchor jumps never bury the heading. */
+  scroll-padding-top: 112px;
+}
+
+/* Any anchor target on the site (sections, h2s, IDs we link to from menus
+   or cross-page links) should clear the sticky header cleanly. */
+section[id],
+[id]:where(h1, h2, h3),
+[data-anchor] {
+  scroll-margin-top: 112px;
 }
