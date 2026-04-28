@@ -5,30 +5,33 @@ import { cn } from "@/lib/utils";
 /*
   KeenForge logo lockup.
 
-  Built as a code lockup: the brand icon (rendered from the icon JPG) plus
-  the wordmark in Fraunces serif. This scales cleanly at any size and avoids
-  the JPG compression that the full-image logo shows at small dimensions.
+  Built as a code lockup so it scales sharply at any size and never carries
+  the JPG margins / compression of the brand presentation files.
 
-  For the very few dark surfaces that need it (footer, dark hero overlays),
-  the wordmark switches to warm ivory and the icon swaps to the dark-bg JPG.
+  - Mark: a custom SVG monogram in a rounded square. Forge Navy on light
+    surfaces, Warm Ivory on dark surfaces.
+  - Wordmark: live text in Fraunces serif, weight 500.
+
+  The brand JPGs in /public/brand are still available for places that want
+  the full presentation logo (e.g. social og images, footer mark).
 */
 
 type LogoLockupProps = {
   className?: string;
   size?: "sm" | "md" | "lg" | "xl";
   /**
-   * "ink" - light surface, navy wordmark
-   * "white" - dark surface, warm ivory wordmark
+   * "ink" - light surface (default). Navy mark, navy wordmark.
+   * "white" - dark surface. Ivory mark, ivory wordmark.
    */
   tone?: "ink" | "white";
   href?: string;
 };
 
 const SIZES = {
-  sm: { icon: 28, text: 18, gap: 10, tracking: "-0.01em" },
-  md: { icon: 34, text: 21, gap: 11, tracking: "-0.015em" },
-  lg: { icon: 40, text: 25, gap: 12, tracking: "-0.02em" },
-  xl: { icon: 48, text: 30, gap: 14, tracking: "-0.025em" },
+  sm: { mark: 28, text: 18, gap: 9, tracking: "-0.012em" },
+  md: { mark: 34, text: 21, gap: 10, tracking: "-0.015em" },
+  lg: { mark: 40, text: 25, gap: 12, tracking: "-0.02em" },
+  xl: { mark: 46, text: 29, gap: 13, tracking: "-0.025em" },
 } as const;
 
 export function LogoLockup({
@@ -37,12 +40,8 @@ export function LogoLockup({
   tone = "ink",
   href = "/",
 }: LogoLockupProps) {
-  const { icon, text, gap, tracking } = SIZES[size];
+  const { mark, text, gap, tracking } = SIZES[size];
   const isWhite = tone === "white";
-
-  const iconSrc = isWhite
-    ? "/brand/KeenForge_Dark_Background_Logo.jpg"
-    : "/brand/KeenForge_Icon_Only.jpg";
 
   const inner = (
     <span
@@ -50,27 +49,7 @@ export function LogoLockup({
       aria-label="KeenForge"
       style={{ gap }}
     >
-      <span
-        className="relative inline-block overflow-hidden rounded-[8px]"
-        style={{ width: icon, height: icon }}
-        aria-hidden
-      >
-        <Image
-          src={iconSrc}
-          alt=""
-          width={icon * 2}
-          height={icon * 2}
-          priority
-          sizes={`${icon}px`}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: isWhite ? "contain" : "cover",
-            objectPosition: "center",
-            background: isWhite ? "var(--forge-navy)" : "transparent",
-          }}
-        />
-      </span>
+      <BrandMark size={mark} tone={tone} />
       <span
         className="font-serif"
         style={{
@@ -80,7 +59,7 @@ export function LogoLockup({
           fontVariationSettings: '"SOFT" 60, "opsz" 144',
           fontWeight: 500,
           color: isWhite ? "var(--warm-ivory)" : "var(--forge-navy)",
-          paddingTop: 2,
+          paddingTop: 1,
         }}
       >
         KeenForge
@@ -100,7 +79,63 @@ export function LogoLockup({
   );
 }
 
-/* Compact icon mark for badges, mobile drawer headers, empty states. */
+/*
+  Custom mark.
+  A rounded square frame with a sharp K monogram.
+  Sharp angles for "Keen", a steady base for "Forge".
+*/
+function BrandMark({
+  size,
+  tone,
+}: {
+  size: number;
+  tone: "ink" | "white";
+}) {
+  const isWhite = tone === "white";
+  const bg = isWhite ? "var(--warm-ivory)" : "var(--forge-navy)";
+  const fg = isWhite ? "var(--forge-navy)" : "var(--warm-ivory)";
+  const accent = "var(--signal-teal)";
+  const radius = Math.round(size * 0.22);
+
+  return (
+    <span
+      className="relative inline-block shrink-0"
+      style={{ width: size, height: size }}
+      aria-hidden
+    >
+      <svg
+        viewBox="0 0 32 32"
+        width={size}
+        height={size}
+        style={{ display: "block", borderRadius: radius, background: bg }}
+      >
+        {/* K monogram: vertical stem, upper diagonal, lower diagonal */}
+        <path
+          d="M10.5 7 V25"
+          stroke={fg}
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M10.5 16 L21.5 7"
+          stroke={fg}
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M14 16 L22 25"
+          stroke={fg}
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
+        {/* Single teal spark at the join, signature accent */}
+        <circle cx="13.2" cy="16" r="1.6" fill={accent} />
+      </svg>
+    </span>
+  );
+}
+
+/* Compact image mark for places that need a flat asset (footer, og tiles). */
 export function LogoMark({
   size = 32,
   className,
