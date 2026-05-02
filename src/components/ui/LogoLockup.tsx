@@ -43,20 +43,20 @@ const VARIANT: Record<
 > = {
   primary: {
     src: "/brand/KeenForge_Primary_Logo.jpg",
-    w: 738,
-    h: 157,
+    w: 770,
+    h: 181,
     alt: "KeenForge logo",
   },
   dark: {
     src: "/brand/KeenForge_Dark_Background_Logo.jpg",
-    w: 764,
-    h: 160,
+    w: 796,
+    h: 184,
     alt: "KeenForge logo for dark backgrounds",
   },
   icon: {
     src: "/brand/KeenForge_Icon_Only.jpg",
-    w: 397,
-    h: 338,
+    w: 429,
+    h: 362,
     alt: "KeenForge icon",
   },
 };
@@ -114,8 +114,8 @@ export function LogoMark({
     <Image
       src="/brand/KeenForge_Icon_Only.jpg"
       alt="KeenForge icon"
-      width={397}
-      height={338}
+      width={429}
+      height={362}
       className={cn("block object-contain", className)}
       style={{ height: size, width: "auto" }}
     />

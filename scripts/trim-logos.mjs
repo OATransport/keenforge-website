@@ -29,16 +29,36 @@ async function trim(file) {
 
   // threshold tuning: the brand backgrounds are flat fills (Warm Ivory or
   // Forge Navy). A modest threshold lets sharp identify them as the border.
-  const out = await sharp(buf)
+  const trimmed = await sharp(buf)
     .trim({ background: undefined, threshold: 12 })
+    .toBuffer({ resolveWithObject: true });
+
+  // Add a tiny breathing margin back. Sharp .trim() crops right up to the
+  // first non-background pixel; adding 12px of the original background back
+  // protects against any perceived clipping at small render sizes while
+  // still removing the bulk of the source's safe area.
+  //
+  // Border color is read from the trimmed image's top-left pixel (which is
+  // adjacent to what was just removed), so the padding always matches the
+  // logo's native background.
+  const { data, info } = trimmed;
+  const { dominant } = await sharp(data).stats();
+  const bg = {
+    r: dominant.r,
+    g: dominant.g,
+    b: dominant.b,
+    alpha: 1,
+  };
+  const padded = await sharp(data, { failOn: "error" })
+    .extend({ top: 12, bottom: 12, left: 16, right: 16, background: bg })
     .jpeg({ quality: 92, mozjpeg: true })
     .toBuffer();
 
-  await fs.writeFile(full, out);
-  const after = await sharp(out).metadata();
+  await fs.writeFile(full, padded);
+  const after = await sharp(padded).metadata();
 
   console.log(
-    `${file}: ${before.width}x${before.height} -> ${after.width}x${after.height}`,
+    `${file}: ${before.width}x${before.height} -> trimmed ${info.width}x${info.height} -> padded ${after.width}x${after.height}`,
   );
 }
 
