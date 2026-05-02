@@ -11,7 +11,7 @@ export function IndustriesSection() {
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <h2 className="display text-[36px] sm:text-[46px] lg:text-[54px] text-ink">
-              Built for Businesses Where Every Lead Matters.
+              Built for Businesses Where Every Lead Matters
             </h2>
           </div>
           <Link

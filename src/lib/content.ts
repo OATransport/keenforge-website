@@ -52,9 +52,9 @@ export const PRIMARY_CTA = {
 /* ------------------------------ HOME -------------------------------- */
 
 export const HERO = {
-  headline: "Turn More Leads Into Booked Appointments.",
+  headline: "Turn More Leads Into Booked Appointments",
   subhead:
-    "For service based and appointment driven businesses, KeenForge connects your website, calls, CRM, booking, and follow up so more of the leads you already earn turn into real appointments.",
+    "KeenForge connects your website, calls, CRM, booking, and follow up so more of the leads you already earn turn into real appointments.",
   primaryCta: PRIMARY_CTA,
   secondaryCta: { label: "See What We Build", href: "/services" },
   trustChips: [
@@ -69,7 +69,7 @@ export const SPINE =
   "Most businesses are not short on leads. They are short on the system that turns interest into revenue.";
 
 export const PROBLEM = {
-  title: "Most Businesses Are Not Short on Leads. They Are Short on Follow Through.",
+  title: "Where Opportunities Usually Slip Away",
   intro:
     "Calls go to voicemail. Forms sit overnight. The website does not push people to take the next step. Quotes never get a second touch. By the time anyone responds, the lead already booked someone else.",
   points: [
@@ -93,8 +93,8 @@ export const PROBLEM = {
 };
 
 export const SOLUTION = {
-  title: "Connect the Pieces That Usually Break Apart.",
-  body: "We install the missing layer between marketing and revenue. The phone gets answered when your team cannot pick up. The text goes out the moment a call is missed. The website turns visitors into appointments instead of bookmarks. The CRM follows up without depending on memory. Every lead has a clear next step from first touch to invoice.",
+  title: "The System Behind Better Response and Follow Up",
+  body: "We connect the pieces between marketing and revenue. The phone gets answered when your team cannot pick up. The text goes out the moment a call is missed. The website turns visitors into appointments instead of bookmarks. The CRM follows up without depending on memory. Every lead has a clear next step from first touch to invoice.",
   pull: SPINE,
 };
 
@@ -428,7 +428,7 @@ export const FAQ = [
 
 export const FINAL_CTA = {
   eyebrow: "Ready When You Are",
-  title: "See What Your Business Looks Like With the Right System Around It.",
+  title: "See What Your Business Looks Like With the Right System Around It",
   body: "A short call, a real review, and a clear plan. No pressure, no fluff, no canned demo.",
   primaryCta: PRIMARY_CTA,
   secondaryCta: { label: "Talk to Us", href: "/contact" },
@@ -440,8 +440,8 @@ export const ABOUT = {
   hero: {
     eyebrow: "About KeenForge",
     title:
-      "We Build the Operating Layer Behind Serious Local Businesses.",
-    body: "Most businesses do not need another tool. They need the layer underneath all the tools. The part that actually answers the call, sends the next message, and makes sure no real lead falls through. That is what KeenForge installs.",
+      "We Build the System Local Businesses Run On",
+    body: "Most businesses do not need another tool. They need the part underneath all the tools. The part that actually answers the call, sends the next message, and makes sure no real lead falls through. That is what KeenForge installs.",
   },
   mission: {
     eyebrow: "What We Believe",

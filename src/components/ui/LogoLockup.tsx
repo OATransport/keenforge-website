@@ -28,10 +28,10 @@ type LogoLockupProps = {
 };
 
 const SIZES = {
-  sm: { mark: 28, text: 18, gap: 9, tracking: "-0.012em" },
-  md: { mark: 34, text: 21, gap: 10, tracking: "-0.015em" },
-  lg: { mark: 40, text: 25, gap: 12, tracking: "-0.02em" },
-  xl: { mark: 46, text: 29, gap: 13, tracking: "-0.025em" },
+  sm: { mark: 30, text: 20, gap: 10, tracking: "-0.015em" },
+  md: { mark: 36, text: 24, gap: 11, tracking: "-0.018em" },
+  lg: { mark: 42, text: 28, gap: 12, tracking: "-0.022em" },
+  xl: { mark: 48, text: 32, gap: 14, tracking: "-0.026em" },
 } as const;
 
 export function LogoLockup({
@@ -96,6 +96,7 @@ function BrandMark({
   const fg = isWhite ? "var(--forge-navy)" : "var(--warm-ivory)";
   const accent = "var(--signal-teal)";
   const radius = Math.round(size * 0.22);
+  const stroke = isWhite ? "rgba(11,31,51,0.10)" : "rgba(255,255,255,0.06)";
 
   return (
     <span
@@ -109,27 +110,41 @@ function BrandMark({
         height={size}
         style={{ display: "block", borderRadius: radius, background: bg }}
       >
-        {/* K monogram: vertical stem, upper diagonal, lower diagonal */}
+        {/* Subtle inner rule so the mark feels framed, not a flat tile */}
+        <rect
+          x="0.6"
+          y="0.6"
+          width="30.8"
+          height="30.8"
+          rx={32 * 0.22}
+          ry={32 * 0.22}
+          fill="none"
+          stroke={stroke}
+          strokeWidth="0.6"
+        />
+
+        {/* K monogram. Slightly heavier strokes and a square cap give the
+            mark a forged, deliberate feel without looking generic. */}
         <path
-          d="M10.5 7 V25"
+          d="M10.5 6.5 V25.5"
           stroke={fg}
-          strokeWidth="2.6"
-          strokeLinecap="round"
+          strokeWidth="2.9"
+          strokeLinecap="square"
         />
         <path
-          d="M10.5 16 L21.5 7"
+          d="M10.5 16 L22 6.6"
           stroke={fg}
-          strokeWidth="2.6"
-          strokeLinecap="round"
+          strokeWidth="2.9"
+          strokeLinecap="square"
         />
         <path
-          d="M14 16 L22 25"
+          d="M14 16.4 L22.6 25.4"
           stroke={fg}
-          strokeWidth="2.6"
-          strokeLinecap="round"
+          strokeWidth="2.9"
+          strokeLinecap="square"
         />
-        {/* Single teal spark at the join, signature accent */}
-        <circle cx="13.2" cy="16" r="1.6" fill={accent} />
+        {/* Signature teal spark at the join */}
+        <circle cx="13" cy="16" r="1.7" fill={accent} />
       </svg>
     </span>
   );

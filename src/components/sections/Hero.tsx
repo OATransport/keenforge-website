@@ -17,19 +17,19 @@ export function Hero() {
 
       <Container
         size="wide"
-        className="pt-20 pb-20 sm:pt-28 sm:pb-28 lg:pt-28 lg:pb-32"
+        className="pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28"
       >
-        <div className="grid items-center gap-16 lg:grid-cols-12 lg:gap-24 xl:gap-28">
+        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-20 xl:gap-24">
           <div className="lg:col-span-7">
-            <h1 className="display-tight max-w-[14ch] text-[44px] leading-[1.04] sm:text-[58px] lg:text-[68px] xl:text-[76px] text-forge-navy">
+            <h1 className="display-tight max-w-[14ch] text-[44px] leading-[1.04] sm:text-[58px] lg:text-[66px] xl:text-[74px] text-forge-navy">
               {HERO.headline}
             </h1>
 
-            <p className="mt-8 max-w-[560px] text-[17.5px] leading-[1.62] text-deep-charcoal/85">
+            <p className="mt-7 max-w-[560px] text-[17.5px] leading-[1.62] text-deep-charcoal/85">
               {HERO.subhead}
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-9 flex flex-wrap items-center gap-3">
               <Button href={HERO.primaryCta.href} variant="primary" size="lg">
                 {HERO.primaryCta.label}
               </Button>
@@ -38,7 +38,7 @@ export function Hero() {
               </Button>
             </div>
 
-            <ul className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13.5px] text-deep-charcoal/80">
+            <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13.5px] text-deep-charcoal/80">
               {HERO.trustChips.map((chip, i) => (
                 <li key={chip} className="flex items-center gap-2">
                   {i > 0 ? (

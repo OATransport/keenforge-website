@@ -11,7 +11,7 @@ export function WhyKeenForge() {
             <h2 className="display text-[36px] sm:text-[46px] lg:text-[54px] text-ink">
               Most Agencies Sell Tools.{" "}
               <span className="serif-italic text-ember">
-                We Build the System Behind Them.
+                We Build the System Behind Them
               </span>
             </h2>
           </div>

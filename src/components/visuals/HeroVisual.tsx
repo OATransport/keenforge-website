@@ -1,179 +1,196 @@
 /*
   Hero visual: the KeenForge Lead Path.
 
-  Editorial brand asset. A quiet vertical path from inquiry to booked work,
-  with one moment of action highlighted in Signal Teal and a copper detail
-  on the outcome. Body copy is one short phrase per stage so the card reads
-  at a glance without competing with the headline.
-
-  No floating chips, no overlap, no fake software UI.
+  A custom editorial brand asset. Three clear moments (Captured, Answered,
+  Booked) drawn as a deliberate card, not a fake software UI. One teal action
+  moment, one copper outcome accent, generous spacing, no floating chips.
 */
 
-type Step = {
-  n: string;
+type Stage = {
+  index: string;
   title: string;
   caption: string;
-  highlight?: boolean;
-  accent?: "copper";
+  moments: ReadonlyArray<string>;
+  variant: "neutral" | "action" | "outcome";
 };
 
-const STEPS: ReadonlyArray<Step> = [
-  { n: "01", title: "New Lead", caption: "Call, form, chat, or ad click." },
+const STAGES: ReadonlyArray<Stage> = [
   {
-    n: "02",
-    title: "Response Sent",
-    caption: "Answered in seconds.",
-    highlight: true,
+    index: "01",
+    title: "Captured",
+    caption: "A new lead enters the system.",
+    moments: ["Website form", "Phone call", "Chat or ad click"],
+    variant: "neutral",
   },
   {
-    n: "03",
-    title: "Pipeline Updated",
-    caption: "Owner notified. Source logged.",
+    index: "02",
+    title: "Answered",
+    caption: "Replied in seconds, owner notified, source logged.",
+    moments: ["Instant reply", "Owner alert", "Pipeline updated"],
+    variant: "action",
   },
   {
-    n: "04",
-    title: "Follow Up Running",
-    caption: "Sequenced texts and reminders.",
-  },
-  {
-    n: "05",
-    title: "Appointment Booked",
-    caption: "Confirmed time on the calendar.",
-  },
-  {
-    n: "06",
-    title: "Review Requested",
-    caption: "Customer prompted at the right moment.",
-    accent: "copper",
+    index: "03",
+    title: "Booked",
+    caption: "Time on the calendar, follow up running, review on the way.",
+    moments: ["Confirmed time", "Sequenced follow up", "Review request"],
+    variant: "outcome",
   },
 ];
 
 export function HeroVisual() {
   return (
     <div className="relative">
+      {/* Soft brand glow behind the card. Keeps the figure feeling lit on the
+          page without leaning on shadows. */}
       <div
         aria-hidden
-        className="absolute -inset-10 -z-10 rounded-[44px] opacity-90"
+        className="pointer-events-none absolute -inset-10 -z-10 rounded-[44px]"
         style={{
           background:
-            "radial-gradient(60% 60% at 78% 14%, rgba(46,143,138,0.18), transparent 62%)",
+            "radial-gradient(60% 55% at 78% 18%, rgba(46,143,138,0.18), transparent 62%)",
         }}
       />
 
-      <figure className="relative overflow-hidden rounded-[26px] border border-steel-rule bg-warm-ivory-2 shadow-[0_40px_90px_-40px_rgba(11,31,51,0.30)]">
+      <figure
+        className="relative overflow-hidden rounded-[24px] border border-steel-rule bg-warm-ivory shadow-[0_40px_90px_-50px_rgba(11,31,51,0.35)]"
+        aria-label="The KeenForge Lead Path: how a new lead becomes a booked appointment."
+      >
         {/* Editorial header */}
-        <div className="border-b border-steel-rule px-7 pt-7 pb-6 sm:px-9">
+        <div className="flex items-center justify-between gap-4 border-b border-steel-rule px-7 pt-6 pb-5 sm:px-9">
           <div className="flex items-center gap-3">
             <span aria-hidden className="h-px w-7 bg-signal-teal" />
             <span className="text-[10.5px] font-semibold uppercase tracking-[0.26em] text-signal-teal">
-              The KeenForge Lead Path
+              Lead Path
             </span>
           </div>
-          <p className="serif-italic mt-4 text-[22px] sm:text-[26px] leading-[1.18] text-forge-navy">
-            From inquiry to booked work.
+          <span className="text-[10.5px] font-medium uppercase tracking-[0.22em] text-steel-gray tabular-nums">
+            01 / 03
+          </span>
+        </div>
+
+        <div className="px-7 pt-7 pb-2 sm:px-9">
+          <p className="serif-italic text-[22px] sm:text-[26px] leading-[1.2] text-forge-navy">
+            From inquiry to booked work,
+            <br className="hidden sm:block" /> in three quiet moves.
           </p>
         </div>
 
-        {/* Vertical path */}
-        <ol className="relative px-7 sm:px-9 py-2">
-          {/* Single connecting rail behind the dots */}
+        {/* Three stages */}
+        <ol className="relative px-7 pb-2 pt-6 sm:px-9">
+          {/* Vertical rail behind the markers, lined up with the indicator. */}
           <span
             aria-hidden
-            className="absolute left-[37px] sm:left-[45px] top-7 bottom-7 w-px bg-steel-rule"
+            className="pointer-events-none absolute left-[40px] top-[36px] bottom-[60px] w-px sm:left-[48px]"
+            style={{
+              background:
+                "linear-gradient(to bottom, var(--steel-rule) 0%, var(--steel-rule) 50%, var(--copper) 100%)",
+              opacity: 0.7,
+            }}
           />
 
-          {STEPS.map((s, i) => {
-            const isLast = i === STEPS.length - 1;
-            const isHighlight = Boolean(s.highlight);
+          {STAGES.map((s, i) => {
+            const isLast = i === STAGES.length - 1;
             return (
-              <li
-                key={s.n}
-                className={!isLast ? "border-b border-steel-rule/60" : ""}
-              >
-                <div className="relative flex items-center gap-5 py-4">
-                  {/* Highlight rail on the left edge of the row */}
-                  {isHighlight ? (
-                    <span
-                      aria-hidden
-                      className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r bg-signal-teal"
-                    />
-                  ) : null}
-
-                  <span className="relative z-[1] flex h-7 w-7 shrink-0 items-center justify-center">
-                    <Dot accent={s.accent} highlight={isHighlight} />
-                  </span>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-baseline gap-3">
-                      <span className="text-[10.5px] font-medium tabular-nums tracking-[0.22em] text-steel-gray">
-                        {s.n}
-                      </span>
-                      <span className="text-[15.5px] font-semibold tracking-tight text-forge-navy">
-                        {s.title}
-                      </span>
-                    </div>
-                    <p className="mt-0.5 text-[13px] leading-snug text-steel-gray">
-                      {s.caption}
-                    </p>
-                  </div>
-                </div>
+              <li key={s.index} className={isLast ? "" : "pb-7"}>
+                <Stage stage={s} />
               </li>
             );
           })}
         </ol>
 
         {/* Outcome footer */}
-        <div className="border-t border-steel-rule bg-warm-ivory px-7 py-6 sm:px-9">
+        <div className="border-t border-steel-rule bg-warm-ivory-2 px-7 py-5 sm:px-9">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span aria-hidden className="h-px w-7 bg-copper" />
-              <span className="text-[10.5px] font-semibold uppercase tracking-[0.24em] text-copper">
+            <div className="flex min-w-0 items-center gap-3">
+              <span aria-hidden className="h-px w-7 shrink-0 bg-copper" />
+              <span className="truncate text-[12px] font-medium uppercase tracking-[0.22em] text-copper">
                 Outcome
               </span>
             </div>
+            <p className="text-right text-[13.5px] font-medium leading-snug text-forge-navy">
+              Booked work, every touch accounted for.
+            </p>
           </div>
-          <p className="mt-3 text-[15px] leading-snug text-forge-navy">
-            Booked work, with every touch accounted for.
-          </p>
         </div>
       </figure>
     </div>
   );
 }
 
-function Dot({
-  accent,
-  highlight,
+function Stage({ stage }: { stage: Stage }) {
+  const isAction = stage.variant === "action";
+  const isOutcome = stage.variant === "outcome";
+
+  return (
+    <div className="relative flex items-start gap-5">
+      <Marker variant={stage.variant} index={stage.index} />
+
+      <div className="min-w-0 flex-1 pt-0.5">
+        <div className="flex items-baseline gap-3">
+          <h3
+            className={[
+              "text-[17px] font-semibold tracking-tight",
+              isAction ? "text-forge-navy" : "text-forge-navy",
+            ].join(" ")}
+          >
+            {stage.title}
+          </h3>
+          {isAction ? (
+            <span className="rounded-full bg-signal-teal px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-warm-ivory">
+              In seconds
+            </span>
+          ) : null}
+          {isOutcome ? (
+            <span className="rounded-full border border-copper/40 bg-warm-ivory px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-copper">
+              On calendar
+            </span>
+          ) : null}
+        </div>
+
+        <p className="mt-1.5 text-[13.5px] leading-snug text-deep-charcoal/80">
+          {stage.caption}
+        </p>
+
+        <ul className="mt-3 flex flex-wrap gap-1.5">
+          {stage.moments.map((m) => (
+            <li
+              key={m}
+              className="inline-flex items-center rounded-full border border-steel-rule bg-warm-ivory px-2.5 py-0.5 text-[11.5px] text-steel-gray"
+            >
+              {m}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function Marker({
+  variant,
+  index,
 }: {
-  accent?: "copper";
-  highlight?: boolean;
+  variant: Stage["variant"];
+  index: string;
 }) {
-  if (accent === "copper") {
+  if (variant === "action") {
     return (
-      <span className="relative">
-        <span className="block h-3 w-3 rounded-full bg-copper" />
-        <span
-          aria-hidden
-          className="absolute inset-0 -m-[5px] rounded-full ring-1 ring-copper/35"
-        />
+      <span className="relative z-[1] flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-signal-teal text-[11px] font-semibold tabular-nums text-warm-ivory shadow-[0_8px_20px_-8px_rgba(46,143,138,0.7)]">
+        {index}
       </span>
     );
   }
-  if (highlight) {
+  if (variant === "outcome") {
     return (
-      <span className="relative">
-        <span className="block h-3 w-3 rounded-full bg-signal-teal" />
-        <span
-          aria-hidden
-          className="absolute inset-0 -m-[5px] rounded-full ring-2 ring-signal-teal/30"
-        />
+      <span className="relative z-[1] flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-copper/40 bg-warm-ivory text-[11px] font-semibold tabular-nums text-copper">
+        {index}
       </span>
     );
   }
   return (
-    <span
-      aria-hidden
-      className="block h-2.5 w-2.5 rounded-full border border-signal-teal bg-warm-ivory"
-    />
+    <span className="relative z-[1] flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-steel-rule bg-warm-ivory text-[11px] font-semibold tabular-nums text-forge-navy">
+      {index}
+    </span>
   );
 }

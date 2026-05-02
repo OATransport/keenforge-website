@@ -7,10 +7,10 @@ import { SERVICE_GROUPS } from "@/lib/content";
 /*
   How leads move from first contact to booked work.
 
-  Five connected stages. Cards laid out as 3 + 2 with the final "Improve"
-  card spanning the full second row, so the grid never looks accidentally
-  empty. The closing card reads as the loop that makes everything else
-  better month over month.
+  Five connected stages. Cards laid out as 3 + 2 with the closing "Improve"
+  card spanning the full second row, treated as the loop that makes the rest
+  better month over month. Designed to feel like a deliberate map, not a
+  generic feature grid.
 */
 export function ServicesOverview() {
   return (
@@ -40,28 +40,23 @@ export function ServicesOverview() {
           </Link>
         </div>
 
-        {/* 3 + 2 layout: first row holds Capture / Respond / Organize.
-            Second row holds Follow Up + Improve, with Improve as the wide
-            closing card so the grid never looks accidentally empty. */}
+        {/* 3 + 2 layout: first row holds Capture / Respond / Organize. Second
+            row holds Follow Up + Improve, with Improve as the wide closing
+            card so the grid never looks accidentally empty. The closing card
+            renders services in two columns and is captioned as the loop. */}
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
           {SERVICE_GROUPS.map((g, i) => {
             const isFinal = i === SERVICE_GROUPS.length - 1;
-            const isFollowUp = i === SERVICE_GROUPS.length - 2;
-            const span = isFinal
-              ? "lg:col-span-4"
-              : isFollowUp
-                ? "lg:col-span-2"
-                : "lg:col-span-2";
             return (
               <LayerCard
                 key={g.id}
-                index={i}
+                index={i + 1}
                 id={g.id}
                 title={g.title}
                 promise={g.promise}
                 services={g.services.map((s) => s.title)}
                 wide={isFinal}
-                className={span}
+                className="lg:col-span-2"
               />
             );
           })}
@@ -88,6 +83,9 @@ function LayerCard({
   wide?: boolean;
   className?: string;
 }) {
+  // Wide card spans 4 cols on lg, displays services in two columns and adds
+  // a "loop" caption so it feels like a deliberate finale.
+  const span = wide ? "lg:col-span-4" : className;
   const visible = wide ? services : services.slice(0, 4);
 
   return (
@@ -95,20 +93,24 @@ function LayerCard({
       href={`/services#${id}`}
       className={[
         "group relative flex flex-col overflow-hidden rounded-2xl border border-steel-rule bg-warm-ivory transition-all hover:border-forge-navy hover:shadow-[0_30px_60px_-30px_rgba(11,31,51,0.20)]",
-        className ?? "",
+        span ?? "",
       ].join(" ")}
     >
-      <div className="flex items-center justify-between px-7 pt-7">
-        <span className="inline-flex items-center gap-3">
-          <span className="serif-italic text-[26px] leading-none text-signal-teal tabular-nums">
-            0{index + 1}
+      {/* Top rule with layer number, set as a confident label rather than an
+          oversized italic ornament. */}
+      <div className="flex items-center justify-between border-b border-steel-rule/70 px-7 py-4">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex h-7 min-w-[28px] items-center justify-center rounded-full bg-signal-teal-tint px-2 text-[11px] font-semibold tabular-nums tracking-[0.08em] text-signal-teal-deep">
+            {String(index).padStart(2, "0")}
           </span>
-          <span aria-hidden className="h-px w-7 bg-signal-teal/50" />
-        </span>
+          <span className="text-[12px] font-medium uppercase tracking-[0.22em] text-steel-gray">
+            Layer
+          </span>
+        </div>
         <ArrowUpRight className="h-4 w-4 text-steel-gray transition-colors group-hover:text-signal-teal" />
       </div>
 
-      <div className="flex flex-1 flex-col px-7 pt-5 pb-7">
+      <div className="flex flex-1 flex-col px-7 pt-6 pb-7">
         <h3 className="text-[26px] font-semibold tracking-tight text-forge-navy">
           {title}
         </h3>
@@ -116,16 +118,41 @@ function LayerCard({
           {promise}
         </p>
 
-        <div className="mt-7 flex flex-wrap gap-1.5">
-          {visible.map((s) => (
-            <span
-              key={s}
-              className="inline-flex items-center rounded-full border border-steel-rule bg-warm-ivory-2 px-2.5 py-1 text-[12px] text-deep-charcoal/85"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
+        {wide ? (
+          <>
+            <div className="mt-7 flex items-center gap-3">
+              <span aria-hidden className="h-px w-7 bg-copper" />
+              <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-copper">
+                The loop that keeps the rest sharp
+              </span>
+            </div>
+            <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+              {visible.map((s) => (
+                <li
+                  key={s}
+                  className="flex items-start gap-2 text-[14px] leading-snug text-forge-navy"
+                >
+                  <span
+                    aria-hidden
+                    className="mt-2 inline-block h-1 w-1 shrink-0 rounded-full bg-signal-teal"
+                  />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <ul className="mt-7 flex flex-wrap gap-1.5">
+            {visible.map((s) => (
+              <li
+                key={s}
+                className="inline-flex items-center rounded-full border border-steel-rule bg-warm-ivory-2 px-2.5 py-1 text-[12px] text-deep-charcoal/85"
+              >
+                {s}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </Link>
   );

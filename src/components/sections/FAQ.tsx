@@ -8,7 +8,7 @@ import { FAQ as FAQ_DATA } from "@/lib/content";
 
 export function FAQ({
   items = FAQ_DATA,
-  title = "The Questions People Ask Before Booking a Review.",
+  title = "Common Questions Before You Book a Review",
 }: {
   items?: ReadonlyArray<{ q: string; a: string }>;
   title?: string;
