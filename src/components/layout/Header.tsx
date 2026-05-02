@@ -57,21 +57,25 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        "sticky top-0 z-50 w-full bg-warm-ivory transition-shadow duration-300",
         scrolled
-          ? "bg-warm-ivory/92 backdrop-blur-md border-b border-steel-rule"
-          : "bg-warm-ivory border-b border-transparent",
+          ? "border-b border-steel-rule shadow-[0_2px_24px_-14px_rgba(11,31,51,0.18)]"
+          : "border-b border-transparent",
       )}
     >
       <Container
         size="wide"
         className={cn(
           "transition-[padding] duration-300",
-          scrolled ? "py-3" : "py-4 sm:py-5",
+          scrolled ? "py-2.5" : "py-3.5 sm:py-4",
         )}
       >
         <div className="flex items-center justify-between gap-6">
-          <LogoLockup size={scrolled ? "lg" : "xl"} />
+          <LogoLockup
+            variant="primary"
+            height={scrolled ? 38 : 46}
+            priority
+          />
 
           <nav className="hidden lg:flex items-center gap-1">
             {NAV.map((item) => {

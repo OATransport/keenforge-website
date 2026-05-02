@@ -5,74 +5,102 @@ import { cn } from "@/lib/utils";
 /*
   KeenForge logo lockup.
 
-  Built as a code lockup so it scales sharply at any size and never carries
-  the JPG margins / compression of the brand presentation files.
+  This is the single source of truth for rendering the brand mark. It always
+  uses the approved brand assets shipped in /public/brand. No live text, no
+  hand-drawn SVG monograms.
 
-  - Mark: a custom SVG monogram in a rounded square. Forge Navy on light
-    surfaces, Warm Ivory on dark surfaces.
-  - Wordmark: live text in Fraunces serif, weight 500.
+  Variants:
+    - "primary"  Horizontal lockup for light surfaces (header, light footer).
+                 /brand/KeenForge_Primary_Logo.jpg
+    - "dark"     Horizontal lockup for dark surfaces (dark footer, dark CTAs).
+                 /brand/KeenForge_Dark_Background_Logo.jpg
+    - "icon"     Square icon mark only. For compact placements.
+                 /brand/KeenForge_Icon_Only.jpg
 
-  The brand JPGs in /public/brand are still available for places that want
-  the full presentation logo (e.g. social og images, footer mark).
+  Sizing:
+    The brand JPGs include a generous safe area (designer padding) baked in.
+    To present the logo at a confident on-screen size without leaving the
+    container looking empty, the horizontal lockups are rendered inside an
+    overflow-hidden container with object-fit: cover and an aspect ratio
+    tuned to the visible glyph bounds. This trims only the empty top/bottom
+    margin of the source file. The mark and wordmark are never cropped.
 */
+
+type Variant = "primary" | "dark" | "icon";
 
 type LogoLockupProps = {
   className?: string;
-  size?: "sm" | "md" | "lg" | "xl";
   /**
-   * "ink" - light surface (default). Navy mark, navy wordmark.
-   * "white" - dark surface. Ivory mark, ivory wordmark.
+   * Visual height of the rendered lockup, in pixels.
+   * Width is derived from the variant aspect ratio.
    */
-  tone?: "ink" | "white";
-  href?: string;
+  height?: number;
+  variant?: Variant;
+  href?: string | null;
+  /** Forwarded to next/image for above-the-fold use (header). */
+  priority?: boolean;
 };
 
-const SIZES = {
-  sm: { mark: 30, text: 20, gap: 10, tracking: "-0.015em" },
-  md: { mark: 36, text: 24, gap: 11, tracking: "-0.018em" },
-  lg: { mark: 42, text: 28, gap: 12, tracking: "-0.022em" },
-  xl: { mark: 48, text: 32, gap: 14, tracking: "-0.026em" },
+/*
+  Aspect ratios are tuned to the visible glyph bounds inside each source
+  file, NOT the raw canvas. Cover-fitting at this aspect crops only the
+  empty top/bottom margin so the wordmark fills the container at a
+  confident reading size.
+*/
+const VARIANT = {
+  primary: {
+    src: "/brand/KeenForge_Primary_Logo.jpg",
+    aspect: 4.0,
+    alt: "KeenForge logo",
+  },
+  dark: {
+    src: "/brand/KeenForge_Dark_Background_Logo.jpg",
+    aspect: 4.0,
+    alt: "KeenForge logo",
+  },
+  icon: {
+    src: "/brand/KeenForge_Icon_Only.jpg",
+    aspect: 1,
+    alt: "KeenForge logo",
+  },
 } as const;
 
 export function LogoLockup({
   className,
-  size = "md",
-  tone = "ink",
+  height = 40,
+  variant = "primary",
   href = "/",
+  priority = false,
 }: LogoLockupProps) {
-  const { mark, text, gap, tracking } = SIZES[size];
-  const isWhite = tone === "white";
+  const { src, aspect, alt } = VARIANT[variant];
+  const width = Math.round(height * aspect);
 
   const inner = (
     <span
-      className={cn("inline-flex items-center", className)}
-      aria-label="KeenForge"
-      style={{ gap }}
+      className={cn(
+        "relative inline-block shrink-0 overflow-hidden align-middle",
+        className,
+      )}
+      style={{ height, width }}
     >
-      <BrandMark size={mark} tone={tone} />
-      <span
-        className="font-serif"
-        style={{
-          fontSize: text,
-          lineHeight: 1,
-          letterSpacing: tracking,
-          fontVariationSettings: '"SOFT" 60, "opsz" 144',
-          fontWeight: 500,
-          color: isWhite ? "var(--warm-ivory)" : "var(--forge-navy)",
-          paddingTop: 1,
-        }}
-      >
-        KeenForge
-      </span>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={`${width}px`}
+        priority={priority}
+        style={{ objectFit: "cover", objectPosition: "center" }}
+      />
     </span>
   );
 
   if (!href) return inner;
+
   return (
     <Link
       href={href}
-      className="inline-flex items-center"
       aria-label="KeenForge home"
+      className="inline-flex items-center"
     >
       {inner}
     </Link>
@@ -80,77 +108,10 @@ export function LogoLockup({
 }
 
 /*
-  Custom mark.
-  A rounded square frame with a sharp K monogram.
-  Sharp angles for "Keen", a steady base for "Forge".
+  Compact icon mark.
+  Renders the square icon-only asset. Used in tight placements where the
+  full horizontal lockup would not fit.
 */
-function BrandMark({
-  size,
-  tone,
-}: {
-  size: number;
-  tone: "ink" | "white";
-}) {
-  const isWhite = tone === "white";
-  const bg = isWhite ? "var(--warm-ivory)" : "var(--forge-navy)";
-  const fg = isWhite ? "var(--forge-navy)" : "var(--warm-ivory)";
-  const accent = "var(--signal-teal)";
-  const radius = Math.round(size * 0.22);
-  const stroke = isWhite ? "rgba(11,31,51,0.10)" : "rgba(255,255,255,0.06)";
-
-  return (
-    <span
-      className="relative inline-block shrink-0"
-      style={{ width: size, height: size }}
-      aria-hidden
-    >
-      <svg
-        viewBox="0 0 32 32"
-        width={size}
-        height={size}
-        style={{ display: "block", borderRadius: radius, background: bg }}
-      >
-        {/* Subtle inner rule so the mark feels framed, not a flat tile */}
-        <rect
-          x="0.6"
-          y="0.6"
-          width="30.8"
-          height="30.8"
-          rx={32 * 0.22}
-          ry={32 * 0.22}
-          fill="none"
-          stroke={stroke}
-          strokeWidth="0.6"
-        />
-
-        {/* K monogram. Slightly heavier strokes and a square cap give the
-            mark a forged, deliberate feel without looking generic. */}
-        <path
-          d="M10.5 6.5 V25.5"
-          stroke={fg}
-          strokeWidth="2.9"
-          strokeLinecap="square"
-        />
-        <path
-          d="M10.5 16 L22 6.6"
-          stroke={fg}
-          strokeWidth="2.9"
-          strokeLinecap="square"
-        />
-        <path
-          d="M14 16.4 L22.6 25.4"
-          stroke={fg}
-          strokeWidth="2.9"
-          strokeLinecap="square"
-        />
-        {/* Signature teal spark at the join */}
-        <circle cx="13" cy="16" r="1.7" fill={accent} />
-      </svg>
-    </span>
-  );
-}
-
-/* Compact image mark for places that need a flat asset (footer, og tiles). */
 export function LogoMark({
   size = 32,
   className,
@@ -161,7 +122,7 @@ export function LogoMark({
   return (
     <Image
       src="/brand/KeenForge_Icon_Only.jpg"
-      alt="KeenForge icon"
+      alt="KeenForge logo"
       width={size}
       height={size}
       className={cn("block rounded-[8px]", className)}

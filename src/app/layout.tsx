@@ -29,13 +29,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
-  icons: {
-    icon: [
-      { url: "/brand/KeenForge_Favicon.jpg", type: "image/jpeg" },
-    ],
-    shortcut: "/brand/KeenForge_Favicon.jpg",
-    apple: "/brand/KeenForge_Favicon.jpg",
-  },
+  // Favicon and Apple icon are handled by the Next.js file convention via
+  // src/app/icon.jpg and src/app/apple-icon.jpg, which point at the
+  // approved KeenForge_Favicon brand asset.
   openGraph: {
     title: `${SITE.name} | Growth Systems for Local and Service Based Businesses`,
     description: SITE.description,
