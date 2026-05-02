@@ -9,21 +9,25 @@ import { cn } from "@/lib/utils";
   Always uses the approved brand assets shipped in /public/brand. There is
   no live text, no hand-drawn SVG monogram, and no recreated wordmark.
 
-  Variants:
-    - "primary"  Horizontal lockup for light surfaces (header, light footer).
-                 /brand/KeenForge_Primary_Logo.jpg
-    - "dark"     Horizontal lockup for dark surfaces (dark footer, dark CTAs).
-                 /brand/KeenForge_Dark_Background_Logo.jpg
-    - "icon"     Mark only. For compact placements where the wordmark would
-                 not fit (mobile menu, favicons, etc).
-                 /brand/KeenForge_Icon_Only.jpg
+  Variants and their approved sources:
+    primary -> /brand/KeenForge_Primary_Logo_Transparent.png
+    dark    -> /brand/KeenForge_Dark_Background_Logo_Transparent.png
+    icon    -> /brand/KeenForge_Icon_Only_Transparent.png
 
-  The brand JPGs in /public/brand were trimmed once with scripts/trim-logos.mjs
-  to remove the empty safe-area padding that ships with the master files. The
-  pixel dimensions and aspect ratios below match the trimmed assets exactly,
-  so object-contain renders the lockup at its natural size with no cropping
-  and no surrounding whitespace.
+  These PNGs are derived from the approved JPG masters by chroma-keying the
+  flat brand background to alpha (see scripts/transparent-logos.mjs). The
+  artwork itself is unchanged: same mark, same divider, same wordmark, same
+  colors, same proportions. Using transparent PNGs lets the lockup sit on
+  any brand surface without showing a baked rectangle behind it.
+
+  Cache busting:
+    Every src is appended with ?v=approved-transparent-2026-05-02 so the
+    browser, any CDN, and the Next.js image-optimization cache must fetch
+    a fresh asset. `unoptimized` is also set so next/image bypasses its
+    own optimization cache and serves the raw approved file.
 */
+
+const BRAND_VERSION = "approved-transparent-2026-05-02";
 
 type Variant = "primary" | "dark" | "icon";
 
@@ -37,29 +41,38 @@ type LogoLockupProps = {
   priority?: boolean;
 };
 
+/*
+  Intrinsic pixel dimensions of the transparent PNG files in /public/brand.
+  These match the trimmed master JPGs exactly. next/image uses them to
+  compute layout. Visual size is driven by the `height` prop.
+*/
 const VARIANT: Record<
   Variant,
   { src: string; w: number; h: number; alt: string }
 > = {
   primary: {
-    src: "/brand/KeenForge_Primary_Logo.jpg",
+    src: "/brand/KeenForge_Primary_Logo_Transparent.png",
     w: 770,
     h: 181,
     alt: "KeenForge logo",
   },
   dark: {
-    src: "/brand/KeenForge_Dark_Background_Logo.jpg",
+    src: "/brand/KeenForge_Dark_Background_Logo_Transparent.png",
     w: 796,
     h: 184,
     alt: "KeenForge logo for dark backgrounds",
   },
   icon: {
-    src: "/brand/KeenForge_Icon_Only.jpg",
+    src: "/brand/KeenForge_Icon_Only_Transparent.png",
     w: 429,
     h: 362,
     alt: "KeenForge icon",
   },
 };
+
+function bust(src: string) {
+  return `${src}?v=${BRAND_VERSION}`;
+}
 
 export function LogoLockup({
   className,
@@ -74,11 +87,12 @@ export function LogoLockup({
 
   const inner = (
     <Image
-      src={src}
+      src={bust(src)}
       alt={alt}
       width={w}
       height={h}
       priority={priority}
+      unoptimized
       sizes={`${renderWidth}px`}
       className={cn("block w-auto object-contain", className)}
       style={{ height, width: renderWidth }}
@@ -91,7 +105,7 @@ export function LogoLockup({
     <Link
       href={href}
       aria-label="KeenForge home"
-      className="inline-flex items-center"
+      className="inline-flex shrink-0 items-center"
     >
       {inner}
     </Link>
@@ -99,9 +113,8 @@ export function LogoLockup({
 }
 
 /*
-  Compact icon mark. Renders the square-ish icon-only asset at a fixed
-  pixel size. Used in tight placements where the full horizontal lockup
-  would not fit.
+  Compact icon mark. Renders the icon-only asset at a fixed pixel size.
+  Used in tight placements where the full horizontal lockup would not fit.
 */
 export function LogoMark({
   size = 32,
@@ -112,10 +125,11 @@ export function LogoMark({
 }) {
   return (
     <Image
-      src="/brand/KeenForge_Icon_Only.jpg"
+      src={bust("/brand/KeenForge_Icon_Only_Transparent.png")}
       alt="KeenForge icon"
       width={429}
       height={362}
+      unoptimized
       className={cn("block object-contain", className)}
       style={{ height: size, width: "auto" }}
     />

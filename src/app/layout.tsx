@@ -29,9 +29,18 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
-  // Favicon and Apple icon are handled by the Next.js file convention via
-  // src/app/icon.jpg and src/app/apple-icon.jpg, which point at the
-  // approved KeenForge_Favicon brand asset.
+  // Favicon system uses the approved KeenForge_Favicon brand asset.
+  // - The Next.js file convention (src/app/icon.jpg and src/app/apple-icon.jpg)
+  //   takes precedence and is what most browsers will pick up.
+  // - The metadata.icons block below is kept as an explicit, cache-busted
+  //   reference to the same approved asset in /public/brand. The version
+  //   query string forces browsers and CDNs to refetch when the asset is
+  //   updated, even though the filename is reused.
+  icons: {
+    icon: "/brand/KeenForge_Favicon.jpg?v=approved-2026-05-02",
+    shortcut: "/brand/KeenForge_Favicon.jpg?v=approved-2026-05-02",
+    apple: "/brand/KeenForge_Favicon.jpg?v=approved-2026-05-02",
+  },
   openGraph: {
     title: `${SITE.name} | Growth Systems for Local and Service Based Businesses`,
     description: SITE.description,
