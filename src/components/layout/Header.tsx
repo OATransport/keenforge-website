@@ -73,7 +73,7 @@ export function Header() {
         <div className="flex items-center justify-between gap-6">
           <LogoLockup
             variant="primary"
-            height={scrolled ? 38 : 46}
+            height={scrolled ? 32 : 40}
             priority
           />
 

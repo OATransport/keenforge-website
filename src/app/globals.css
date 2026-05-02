@@ -180,19 +180,19 @@ body {
 /*
   Sticky header offset.
 
-  The header is sticky and changes height between an expanded state (~92px
-  including the larger lockup) and a compact scrolled state (~68px). We pad
-  scroll positions to the larger of the two plus a comfortable buffer so
-  anchor jumps land with the heading clearly visible below the header on
-  desktop and on mobile.
+  The header is sticky and changes height between an expanded state (~72px
+  including the lockup) and a compact scrolled state (~52px). We pad scroll
+  positions to the larger of the two plus a comfortable buffer so anchor
+  jumps land with the heading clearly visible below the header on desktop
+  and on mobile.
 */
 :root {
-  --header-offset: 120px;
+  --header-offset: 96px;
 }
 
 @media (max-width: 640px) {
   :root {
-    --header-offset: 96px;
+    --header-offset: 84px;
   }
 }
 

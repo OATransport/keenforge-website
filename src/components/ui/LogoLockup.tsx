@@ -5,35 +5,31 @@ import { cn } from "@/lib/utils";
 /*
   KeenForge logo lockup.
 
-  This is the single source of truth for rendering the brand mark. It always
-  uses the approved brand assets shipped in /public/brand. No live text, no
-  hand-drawn SVG monograms.
+  Single source of truth for rendering the brand mark across the site.
+  Always uses the approved brand assets shipped in /public/brand. There is
+  no live text, no hand-drawn SVG monogram, and no recreated wordmark.
 
   Variants:
     - "primary"  Horizontal lockup for light surfaces (header, light footer).
                  /brand/KeenForge_Primary_Logo.jpg
     - "dark"     Horizontal lockup for dark surfaces (dark footer, dark CTAs).
                  /brand/KeenForge_Dark_Background_Logo.jpg
-    - "icon"     Square icon mark only. For compact placements.
+    - "icon"     Mark only. For compact placements where the wordmark would
+                 not fit (mobile menu, favicons, etc).
                  /brand/KeenForge_Icon_Only.jpg
 
-  Sizing:
-    The brand JPGs include a generous safe area (designer padding) baked in.
-    To present the logo at a confident on-screen size without leaving the
-    container looking empty, the horizontal lockups are rendered inside an
-    overflow-hidden container with object-fit: cover and an aspect ratio
-    tuned to the visible glyph bounds. This trims only the empty top/bottom
-    margin of the source file. The mark and wordmark are never cropped.
+  The brand JPGs in /public/brand were trimmed once with scripts/trim-logos.mjs
+  to remove the empty safe-area padding that ships with the master files. The
+  pixel dimensions and aspect ratios below match the trimmed assets exactly,
+  so object-contain renders the lockup at its natural size with no cropping
+  and no surrounding whitespace.
 */
 
 type Variant = "primary" | "dark" | "icon";
 
 type LogoLockupProps = {
   className?: string;
-  /**
-   * Visual height of the rendered lockup, in pixels.
-   * Width is derived from the variant aspect ratio.
-   */
+  /** Visual height in pixels. Width is derived from the asset's aspect. */
   height?: number;
   variant?: Variant;
   href?: string | null;
@@ -41,29 +37,29 @@ type LogoLockupProps = {
   priority?: boolean;
 };
 
-/*
-  Aspect ratios are tuned to the visible glyph bounds inside each source
-  file, NOT the raw canvas. Cover-fitting at this aspect crops only the
-  empty top/bottom margin so the wordmark fills the container at a
-  confident reading size.
-*/
-const VARIANT = {
+const VARIANT: Record<
+  Variant,
+  { src: string; w: number; h: number; alt: string }
+> = {
   primary: {
     src: "/brand/KeenForge_Primary_Logo.jpg",
-    aspect: 4.0,
+    w: 738,
+    h: 157,
     alt: "KeenForge logo",
   },
   dark: {
     src: "/brand/KeenForge_Dark_Background_Logo.jpg",
-    aspect: 4.0,
-    alt: "KeenForge logo",
+    w: 764,
+    h: 160,
+    alt: "KeenForge logo for dark backgrounds",
   },
   icon: {
     src: "/brand/KeenForge_Icon_Only.jpg",
-    aspect: 1,
-    alt: "KeenForge logo",
+    w: 397,
+    h: 338,
+    alt: "KeenForge icon",
   },
-} as const;
+};
 
 export function LogoLockup({
   className,
@@ -72,26 +68,21 @@ export function LogoLockup({
   href = "/",
   priority = false,
 }: LogoLockupProps) {
-  const { src, aspect, alt } = VARIANT[variant];
-  const width = Math.round(height * aspect);
+  const { src, w, h, alt } = VARIANT[variant];
+  const aspect = w / h;
+  const renderWidth = Math.round(height * aspect);
 
   const inner = (
-    <span
-      className={cn(
-        "relative inline-block shrink-0 overflow-hidden align-middle",
-        className,
-      )}
-      style={{ height, width }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={`${width}px`}
-        priority={priority}
-        style={{ objectFit: "cover", objectPosition: "center" }}
-      />
-    </span>
+    <Image
+      src={src}
+      alt={alt}
+      width={w}
+      height={h}
+      priority={priority}
+      sizes={`${renderWidth}px`}
+      className={cn("block w-auto object-contain", className)}
+      style={{ height, width: renderWidth }}
+    />
   );
 
   if (!href) return inner;
@@ -108,9 +99,9 @@ export function LogoLockup({
 }
 
 /*
-  Compact icon mark.
-  Renders the square icon-only asset. Used in tight placements where the
-  full horizontal lockup would not fit.
+  Compact icon mark. Renders the square-ish icon-only asset at a fixed
+  pixel size. Used in tight placements where the full horizontal lockup
+  would not fit.
 */
 export function LogoMark({
   size = 32,
@@ -122,11 +113,11 @@ export function LogoMark({
   return (
     <Image
       src="/brand/KeenForge_Icon_Only.jpg"
-      alt="KeenForge logo"
-      width={size}
-      height={size}
-      className={cn("block rounded-[8px]", className)}
-      style={{ width: size, height: size, objectFit: "cover" }}
+      alt="KeenForge icon"
+      width={397}
+      height={338}
+      className={cn("block object-contain", className)}
+      style={{ height: size, width: "auto" }}
     />
   );
 }

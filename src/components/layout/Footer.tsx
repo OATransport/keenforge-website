@@ -12,7 +12,7 @@ export function Footer() {
       <Container size="wide" className="py-20">
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-5">
-            <LogoLockup variant="dark" height={52} />
+            <LogoLockup variant="dark" height={44} />
             <p className="mt-7 max-w-md text-[15.5px] leading-relaxed text-night-ink-2">
               KeenForge connects your website, calls, CRM, booking, and
               follow up so more of the leads you already earn turn into real
