@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { LogoLockup } from "@/components/ui/LogoLockup";
+import { Logo } from "@/components/ui/Logo";
 import { NAV, PRIMARY_CTA } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -76,11 +76,7 @@ export function Header() {
             aria-label="KeenForge home"
             className="inline-flex shrink-0 items-center"
           >
-            <LogoLockup
-              variant="primary"
-              priority
-              className="h-10 max-w-[220px] md:h-12 md:max-w-[260px]"
-            />
+            <Logo priority className="h-10 md:h-12" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
