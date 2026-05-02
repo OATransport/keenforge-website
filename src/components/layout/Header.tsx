@@ -71,11 +71,17 @@ export function Header() {
         )}
       >
         <div className="flex items-center justify-between gap-6">
-          <LogoLockup
-            variant="primary"
-            height={scrolled ? 34 : 42}
-            priority
-          />
+          <Link
+            href="/"
+            aria-label="KeenForge home"
+            className="inline-flex shrink-0 items-center"
+          >
+            <LogoLockup
+              variant="primary"
+              priority
+              className="h-10 max-w-[220px] md:h-12 md:max-w-[260px]"
+            />
+          </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
             {NAV.map((item) => {
